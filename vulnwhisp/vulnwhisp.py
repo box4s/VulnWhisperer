@@ -757,7 +757,7 @@ class vulnWhispererOpenVAS(vulnWhispererBase):
 
 
             scan_name = report_id.replace('-', '')
-            report_name = 'openvas_scan_{scan_name}_{last_updated}.{extension}'.format(scan_name=scan_name,
+            report_name = 'openvas_scan_{last_updated}_{scan_name}.{extension}'.format(scan_name=scan_name,
                                                                                        last_updated=launched_date,
                                                                                        extension=output_format)
             relative_path_name = self.path_check(report_name).encode('utf8')
@@ -874,8 +874,8 @@ class vulnWhispererQualysVuln(vulnWhispererBase):
             launched_date
             if 'Z' in launched_date:
                 launched_date = self.qualys_scan.utils.iso_to_epoch(launched_date)
-            report_name = 'qualys_vuln_' + report_id.replace('/','_') \
-                          + '_{last_updated}'.format(last_updated=launched_date) \
+            report_name = 'qualys_vuln_' + '_{last_updated}'.format(last_updated=launched_date) \
+                          + report_id.replace('/','_') \
                           + '.json'
 
             relative_path_name = self.path_check(report_name).encode('utf8')
@@ -1248,9 +1248,9 @@ class vulnWhispererJIRA(vulnWhispererBase):
         if self.host_no_resolv:
             #we will replace old list of non resolved for the new one or create if it doesn't exist already
             self.no_resolv_by_team_dict[scan_name] = self.host_no_resolv
-            with open(self.no_resolv_fname, 'w') as outfile:  
+            with open(self.no_resolv_fname, 'w') as outfile:
                     json.dump(self.no_resolv_by_team_dict, outfile)
-        
+
         self.set_latest_scan_reported(fullpath.split("/")[-1])
         return True
 
